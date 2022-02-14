@@ -1,0 +1,89 @@
+@Article{Angelino2017,
+  author        = {Elaine Angelino and Nicholas Larus-Stone and Daniel Alabi and Margo Seltzer and Cynthia Rudin},
+  journal       = {Journal of Machine Learning Research 18(234):1-78, 2018},
+  title         = {Learning Certifiably Optimal Rule Lists for Categorical Data},
+  year          = {2017},
+  month         = apr,
+  abstract      = {We present the design and implementation of a custom discrete optimization technique for building rule lists over a categorical feature space. Our algorithm produces rule lists with optimal training performance, according to the regularized empirical risk, with a certificate of optimality. By leveraging algorithmic bounds, efficient data structures, and computational reuse, we achieve several orders of magnitude speedup in time and a massive reduction of memory consumption. We demonstrate that our approach produces optimal rule lists on practical problems in seconds. Our results indicate that it is possible to construct optimal sparse rule lists that are approximately as accurate as the COMPAS proprietary risk prediction tool on data from Broward County, Florida, but that are completely interpretable. This framework is a novel alternative to CART and other decision tree methods for interpretable modeling.},
+  archiveprefix = {arXiv},
+  eprint        = {1704.01701},
+  file          = {:http\://arxiv.org/pdf/1704.01701v4:PDF},
+  keywords      = {stat.ML, cs.LG},
+  primaryclass  = {stat.ML},
+}
+
+@Article{Lin2020,
+  author        = {Jimmy Lin and Chudi Zhong and Diane Hu and Cynthia Rudin and Margo Seltzer},
+  title         = {Generalized and Scalable Optimal Sparse Decision Trees},
+  year          = {2020},
+  month         = jun,
+  abstract      = {Decision tree optimization is notoriously difficult from a computational perspective but essential for the field of interpretable machine learning. Despite efforts over the past 40 years, only recently have optimization breakthroughs been made that have allowed practical algorithms to find optimal decision trees. These new techniques have the potential to trigger a paradigm shift where it is possible to construct sparse decision trees to efficiently optimize a variety of objective functions without relying on greedy splitting and pruning heuristics that often lead to suboptimal solutions. The contribution in this work is to provide a general framework for decision tree optimization that addresses the two significant open problems in the area: treatment of imbalanced data and fully optimizing over continuous variables. We present techniques that produce optimal decision trees over a variety of objectives including F-score, AUC, and partial area under the ROC convex hull. We also introduce a scalable algorithm that produces provably optimal results in the presence of continuous variables and speeds up decision tree construction by several orders of magnitude relative to the state-of-the art.},
+  archiveprefix = {arXiv},
+  eprint        = {2006.08690},
+  file          = {:http\://arxiv.org/pdf/2006.08690v3:PDF},
+  keywords      = {cs.LG, stat.ML, I.2.6},
+  primaryclass  = {cs.LG},
+}
+
+@Article{Rudin2019,
+  author    = {Cynthia Rudin},
+  journal   = {Nature Machine Intelligence},
+  title     = {Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead},
+  year      = {2019},
+  month     = {may},
+  number    = {5},
+  pages     = {206--215},
+  volume    = {1},
+  doi       = {10.1038/s42256-019-0048-x},
+  publisher = {Springer Science and Business Media {LLC}},
+}
+
+@Book{molnar2019,
+  author   = {Christoph Molnar},
+  title    = {Interpretable Machine Learning},
+  year     = {2019},
+  subtitle = {A Guide for Making Black Box Models Explainable},
+}
+
+@InProceedings{Zharmagambetov2021,
+  author    = {Arman Zharmagambetov and Suryabhan Singh Hada and Magzhan Gabidolla and Miguel A. Carreira-Perpinan},
+  booktitle = {2021 International Joint Conference on Neural Networks ({IJCNN})},
+  title     = {Non-Greedy Algorithms for Decision Tree Optimization: An Experimental Comparison},
+  year      = {2021},
+  month     = {jul},
+  publisher = {{IEEE}},
+  doi       = {10.1109/ijcnn52387.2021.9533597},
+}
+
+@InCollection{Cohen1995,
+  author    = {William W. Cohen},
+  booktitle = {Machine Learning Proceedings 1995},
+  publisher = {Elsevier},
+  title     = {Fast Effective Rule Induction},
+  year      = {1995},
+  pages     = {115--123},
+  doi       = {10.1016/b978-1-55860-377-6.50023-2},
+}
+
+@Article{Raschka2018,
+  author        = {Sebastian Raschka},
+  title         = {Model Evaluation, Model Selection, and Algorithm Selection in Machine Learning},
+  year          = {2018},
+  month         = nov,
+  abstract      = {The correct use of model evaluation, model selection, and algorithm selection techniques is vital in academic machine learning research as well as in many industrial settings. This article reviews different techniques that can be used for each of these three subtasks and discusses the main advantages and disadvantages of each technique with references to theoretical and empirical studies. Further, recommendations are given to encourage best yet feasible practices in research and applications of machine learning. Common methods such as the holdout method for model evaluation and selection are covered, which are not recommended when working with small datasets. Different flavors of the bootstrap technique are introduced for estimating the uncertainty of performance estimates, as an alternative to confidence intervals via normal approximation if bootstrapping is computationally feasible. Common cross-validation techniques such as leave-one-out cross-validation and k-fold cross-validation are reviewed, the bias-variance trade-off for choosing k is discussed, and practical tips for the optimal choice of k are given based on empirical evidence. Different statistical tests for algorithm comparisons are presented, and strategies for dealing with multiple comparisons such as omnibus tests and multiple-comparison corrections are discussed. Finally, alternative methods for algorithm selection, such as the combined F-test 5x2 cross-validation and nested cross-validation, are recommended for comparing machine learning algorithms when datasets are small.},
+  archiveprefix = {arXiv},
+  eprint        = {1811.12808},
+  file          = {:http\://arxiv.org/pdf/1811.12808v3:PDF},
+  keywords      = {cs.LG, stat.ML},
+  primaryclass  = {cs.LG},
+}
+
+@Book{Japkowicz2009,
+  author    = {Nathalie Japkowicz and Mohak Shah},
+  publisher = {Cambridge University Press},
+  title     = {Evaluating Learning Algorithms},
+  year      = {2009},
+  doi       = {10.1017/cbo9780511921803},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}
