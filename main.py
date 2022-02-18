@@ -1,4 +1,5 @@
 from ast import Index
+from email.encoders import encode_noop
 from random import seed
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -100,11 +101,17 @@ if __name__ == "__main__":
     wine_white_df_hot_one = wine_white_df_binned
     for feature in list(wine_white_df_hot_one):
         wine_white_df_hot_one = encode_and_bind(wine_white_df_hot_one,feature)
-    clf = corels.CorelsClassifier(max_card=5)
+    clf = corels.CorelsClassifier(max_card=2)
     wwine_quality = pd.qcut(wwine_quality,2,labels=[1,2])
     wwine_quality_hot_one = pd.get_dummies(wwine_quality)
-    clf.fit(wine_white_df_hot_one,wwine_quality_hot_one[1],features=list(wine_white_df_hot_one))
-    print(clf.score(wine_white_df_hot_one,wwine_quality_hot_one[1]))
-    rf = RandomForestClassifier()
-    rf.fit(wine_white_df_hot_one,wwine_quality_hot_one[1])
-    print(rf.score(wine_white_df_hot_one,wwine_quality_hot_one[1]))
+    # preprocess red wine dataset
+    rwine_quality = wine_red_df["quality"]
+    wine_red_df_binned = wine_red_df.drop(["quality"],axis=1)
+    for feature in list(wine_red_df_binned):
+        wine_red_df_binned[feature] = pd.qcut(wine_red_df_binned[feature],5,labels=False)
+    le = LabelEncoder()
+    wine_red_df_binned = wine_red_df_binned.apply(le.fit_transform)
+    wine_red_df_hot_one = wine_red_df_binned
+    for feature in list(wine_red_df_binned):
+        wine_red_df_hot_one = encode_and_bind(wine_red_df_hot_one,feature)
+
