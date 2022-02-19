@@ -1,15 +1,18 @@
 from ast import Index
-from email.encoders import encode_noop
+import json
 from random import seed
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, KBinsDiscretizer
 import sklearn.metrics
 import sklearn.ensemble
-from sklearn.model_selection import KFold
+from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score, roc_auc_score, f1_score, precision_score, recall_score
 import corels
-
+from sklearn import svm, tree
+from sklearn.neural_network import MLPClassifier
+import wittgenstein as lw
+import imodels
 # Constants (seed for random state)
 seed = 42
 
@@ -20,28 +23,40 @@ def encode_and_bind(original_dataframe, feature_to_encode):
     return(res) 
 
 def write_metrics_binary_classification(clf, file_to_write, X, y):
-    kf = KFold(n_splits=5, random_state=seed, shuffle=True)
+    kf = StratifiedKFold(n_splits=5, random_state=seed, shuffle=True)
     acc_scores = []
     f1_scores = []
     roc_auc_scores = []
     recall_scores = []
     precision_scores = []
+    file = "./results/" + str(file_to_write)
     for train_index, test_index in kf.split(X,y):
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
-        print(X_train)
-        #clf.fit(X_train, y_train)
+        #print(X_train)
+        clf.fit(X_train, y_train)
+        acc_scores.append(clf.score(X_test,y_test))
+        f1_scores.append(f1_score(y_test,clf.predict(X_test)))
+        roc_auc_scores.append(roc_auc_score(y_test, clf.predict_proba(X_test)[:, 1]))
+        recall_scores.append(recall_score(y_test,clf.predict(X_test)))
+        precision_scores.append(precision_score(y_test,clf.predict(X_test)))
         #print(clf.score(X_test,y_test))
     #print(X.head())
     #print(y.head())
     clf.fit(X,y)
     print(clf.score(X,y))
+    with open(file,"w") as f:
+        f.write(json.dumps(acc_scores)+str(sum(acc_scores)/len(acc_scores))+"\n")
+        f.write(json.dumps(f1_scores)+str(sum(f1_scores)/len(f1_scores))+"\n")
+        f.write(json.dumps(roc_auc_scores)+str(sum(roc_auc_scores)/len(roc_auc_scores))+"\n")
+        f.write(json.dumps(recall_scores)+str(sum(recall_scores)/len(recall_scores))+"\n")
+        f.write(json.dumps(precision_scores)+str(sum(precision_scores)/len(precision_scores))+"\n")
 
 if __name__ == "__main__": 
     # import datasets
     titanic_df = pd.read_csv("./datasets/titanic.csv")
     heart_df = pd.read_csv("./datasets/heart.csv")
-    wine_red_df = pd.read_csv("./datasets/winequality-red.csv")
+    wine_red_df = pd.read_csv("./datasets/winequality-red.csv",sep=";")
     wine_white_df = pd.read_csv("./datasets/winequality-white.csv",sep=";")
     # clean dataframes of useless data ( titanic only) and get class as last element in df
     titanic_df = titanic_df.drop("Name",axis=1)
@@ -114,4 +129,35 @@ if __name__ == "__main__":
     wine_red_df_hot_one = wine_red_df_binned
     for feature in list(wine_red_df_binned):
         wine_red_df_hot_one = encode_and_bind(wine_red_df_hot_one,feature)
+    print(heart_df.head())
+    write_metrics_binary_classification(rf,"rftest.txt",heart_df.drop(["target"],axis=1),heart_df["target"])
+
+    ## heart disease runs
+    # unbinned runs
+    """ write_metrics_binary_classification(RandomForestClassifier(),"rf_heart_unbinned.txt",heart_df.drop(["target"],axis=1),heart_df["target"])
+    write_metrics_binary_classification(svm.SVC(probability=True),"svm_heart_unbinned.txt",heart_df.drop(["target"],axis=1),heart_df["target"])
+    write_metrics_binary_classification(MLPClassifier(max_iter=10000),"mlp_heart_unbinned.txt",heart_df.drop(["target"],axis=1),heart_df["target"])
+    write_metrics_binary_classification(tree.DecisionTreeClassifier(),"dt_heart_unbinned.txt",heart_df.drop(["target"],axis=1),heart_df["target"])
+    write_metrics_binary_classification(lw.RIPPER(),"ripper_heart_unbinned.txt",heart_df.drop(["target"],axis=1),heart_df["target"]) """
+    ## binned runs
+    """ write_metrics_binary_classification(RandomForestClassifier(),"rf_heart_binned.txt",heart_df_binned.drop(["target"],axis=1),heart_df_binned["target"])
+    write_metrics_binary_classification(svm.SVC(probability=True),"svm_heart_binned.txt",heart_df_binned.drop(["target"],axis=1),heart_df_binned["target"])
+    write_metrics_binary_classification(MLPClassifier(max_iter=10000),"mlp_heart_binned.txt",heart_df_binned.drop(["target"],axis=1),heart_df_binned["target"])
+    write_metrics_binary_classification(tree.DecisionTreeClassifier(),"dt_heart_binned.txt",heart_df_binned.drop(["target"],axis=1),heart_df_binned["target"])
+    write_metrics_binary_classification(lw.RIPPER(),"ripper_heart_binned.txt",heart_df_binned.drop(["target"],axis=1),heart_df_binned["target"]) """
+    ##binary runs
+    write_metrics_binary_classification(RandomForestClassifier(),"rf_heart_hot_one.txt",heart_df_hot_one.drop(["target"],axis=1),heart_df_hot_one["target"])
+    write_metrics_binary_classification(svm.SVC(probability=True),"svm_heart_hot_one.txt",heart_df_hot_one.drop(["target"],axis=1),heart_df_hot_one["target"])
+    write_metrics_binary_classification(MLPClassifier(max_iter=10000),"mlp_heart_hot_one.txt",heart_df_hot_one.drop(["target"],axis=1),heart_df_hot_one["target"])
+    write_metrics_binary_classification(tree.DecisionTreeClassifier(),"dt_heart_hot_one.txt",heart_df_hot_one.drop(["target"],axis=1),heart_df_hot_one["target"])
+    write_metrics_binary_classification(lw.RIPPER(),"ripper_heart_hot_one.txt",heart_df_hot_one.drop(["target"],axis=1),heart_df_hot_one["target"])
+    write_metrics_binary_classification(imodels.OptimalRuleListClassifier(),"corels_heart_hot_one.txt",heart_df_hot_one.drop(["target"],axis=1),heart_df_hot_one["target"])
+    ## titanic runs
+
+
+    ## white wine runs 
+
+
+
+    ## red wine runs
 
